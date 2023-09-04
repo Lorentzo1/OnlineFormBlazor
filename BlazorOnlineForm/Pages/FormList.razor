@@ -1,0 +1,42 @@
+﻿@page "/formlist"
+@using BlazorOnlineForm.Shared.Components
+
+
+<h3> Form List</h3>
+
+<ServerErrorPopUp @ref=_serverErrorPopUp />
+<BlazorOnlineForm.Shared.Components.PopUp @ref="_popUp" CloseButtonHidden=@true />
+
+@if (forms.Count > 0)
+{
+    @foreach (var form in forms)
+    {
+        <div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input @bind="form.Id" readonly="readonly" />
+                        </td>
+                        <td>
+                            @string.Join(',', form.LastName, form.FirstName)
+                        </td>
+                        <td>
+                            <input @bind="form.Email" readonly="readonly" />
+                        </td>
+                        <td>
+                            @string.Join(';', form.RoleName!)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button @onclick="() => NavigateToFormEdit(form.Id)">
+                <h4>Edit</h4>
+            </button>
+            <button @onclick="(() => DeleteForm(form.Id))" class="alert-danger">
+                <h4>Delete</h4>
+            </button>
+        </div>
+    }
+}
+

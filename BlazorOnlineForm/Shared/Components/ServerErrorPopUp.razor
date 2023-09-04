@@ -1,0 +1,41 @@
+﻿
+<div hidden="@_hidden">
+    <h3>Server Error</h3>
+
+    <h3> @_methodName faild </h3>
+
+    <h3> Please try this action again later</h3>
+
+    <button @onclick="OnCloseButton"></button>
+</div>
+
+
+
+
+@code {
+
+    private string _methodName;
+
+    private bool _hidden = true;
+
+    private void OnCloseButton()
+    {
+        _hidden = true;
+    }
+
+    public async Task ShowPopUp(string methodName)
+    {
+        _hidden = false;
+        _methodName = methodName ?? "";
+        await InvokeAsync(() => StateHasChanged());
+        await HideAfterTime();
+    }
+
+    public async Task HideAfterTime()
+    {
+        await Task.Delay(TimeSpan.FromSeconds(25));
+        _hidden = true;
+        await InvokeAsync(() => StateHasChanged());
+    }
+
+}

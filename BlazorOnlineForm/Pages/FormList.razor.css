@@ -1,0 +1,39 @@
+﻿
+div {
+    border: 2px thin grey;
+    border-style: solid;
+    padding-block: 15px;
+}
+ table {
+    border: 2px solid black;
+    background:center;
+    background-color:mediumaquamarine;
+}
+
+ tr {
+    
+    color: darkblue
+}
+
+ input{
+     color:darkblue
+ }
+td {
+    text-align-last: center;
+    padding: 15px;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+button {
+    border-radius: 45px;
+    border: 2px ridge;
+    border-color:lightcyan;
+    padding: 10px;
+    width: 80px;
+    height: 50px;
+}
+
+h4{
+    font-size:18px;
+    font-weight:bold;
+}

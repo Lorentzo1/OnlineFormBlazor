@@ -1,0 +1,159 @@
+﻿@page "/form"
+@page "/form/{id:int}"
+
+@using BlazorOnlineForm.Shared.Dtos;
+
+<div>
+    <h3>Form</h3>
+    <BlazorOnlineForm.Shared.Components.ServerErrorPopUp @ref=_serverErrorPopUp />
+    <BlazorOnlineForm.Shared.Components.PopUp @ref="_popUp" CloseButtonHidden=@false/>
+
+    <EditForm Model="_formDto" OnValidSubmit="@OnValidSubmit" hidden="@_hideEditForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div>
+            @if (Id is not null)
+            {
+                <div>
+                    <label>
+                        Id @_formDto.Id
+                    </label>
+                </div>
+            }
+            <div>
+                <label>
+                    First Name
+                </label>
+                <InputText @bind-Value="_formDto.FirstName" />
+                <ValidationMessage For=@( () => _formDto.FirstName) />
+            </div>
+            <div>
+                <label>
+                    Last Name
+                </label>
+                <InputText @bind-Value="_formDto.LastName" />
+                <ValidationMessage For=@( () => _formDto.LastName) />
+
+            </div>
+            <div>
+                <label>
+                    Email
+                </label>
+                <InputText @bind-Value="_formDto.Email" />
+                <ValidationMessage For=@( () => _formDto.Email) />
+
+            </div>
+            <div>
+                <label>
+                    Id Number
+                </label>
+                <InputText @bind-Value="_formDto.IdNumber" @onfocusout="CalculateDateOfBirthFromIdNumber" id="IdNumberInput" disabled="@_IdInputDisable" />
+                <ValidationMessage For=@( () => _formDto.IdNumber) />
+
+                <label>
+                    No Id
+                </label>
+                <input type="checkbox" id="IsCheckedNoId" checked="@_noIdCheckBoxChecked" value="@_formDto.IsCheckedNoId" @onchange="OnNoIdNumber" />
+            </div>
+            <div class="form-group">
+                <label>Citizenship: </label>
+                <div>
+                    <InputSelect class="form-control"
+                    @bind-Value="_formDto.Citizenship" title="--- Select your Citizenship ---">
+                        @foreach (var country in _listOfContries)
+                        {
+                            @if (country == _formDto.Citizenship)
+                            {
+                                <option selected value="@country">@country</option>
+                            }
+                            else
+                            {
+                                <option value="@country">@country</option>
+                            }
+                        }
+                    </InputSelect>
+                </div>
+                <ValidationMessage For=@( () => _formDto.Citizenship) />
+            </div>
+
+            <div>
+                <label>
+                    Date of Birth
+                </label>
+
+                <input type="date" @bind="_formDto.DateOfBirth" disabled="@_dateOfBirtDisable" />
+                <ValidationMessage For=@( () => _formDto.DateOfBirth) />
+
+            </div>
+            <div>
+                <label>
+                    Phone
+                </label>
+                <InputNumber @bind-Value="_formDto.Phone" />
+                <ValidationMessage For=@( () => _formDto.Phone) />
+
+            </div>
+            <div class="form-group">
+                <label>Contract type:</label>
+                <div>
+                    <InputSelect class="form-control"
+                    @bind-Value="_formDto.ContractType" title="--- Select your Sex ---">
+                        @foreach (var type in Enum.GetValues<ContractTypes>())
+                        {
+                            @if (type == _formDto.ContractType)
+                            {
+                                <option selected value="@type">@type</option>
+                            }
+                            else
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+            <div>
+                <label>
+                    Approval of GDPR
+                </label>
+                <InputCheckbox @bind-Value="_formDto.GdprApproved" />
+                <ValidationMessage For=@( () => _formDto.GdprApproved) />
+
+            </div>
+            <div>
+                <label>
+                    Roles
+                </label>
+                <input @bind="_formDto.RoleName" />
+
+            </div>
+            <div class="form-group">
+                <label>Roles:</label>
+                <div>
+                    <InputSelect class="form-control"
+                    @bind-Value="_formDto.RoleName" title="--- Select your Roles ---">
+                        @foreach (var role in _listOfRoles)
+                        {
+
+                            string roleSelected = role;
+                            <option value="@role" @onclick="() => (OnClickRoles(roleSelected))"> @role </option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+            <div>
+                <button title="Submit" type="submit" class="btn btn-primary" Color="ThemeColor.Primary">
+                    <p class="align-content-center">Submit</p>
+                </button>
+                <button title="Clear" type="reset" class="btn btn-secondary" Color="ThemeColor.Primary" @onclick="OnClear">
+                    <p class="align-content-center">Clear</p>
+                </button>
+            </div>
+        </div>
+    </EditForm>
+    <div>
+        <button id="CreateNewFormButton" @onclick="HideOrShowEditForm" hidden="@_hideCreateNewFormButton">
+            <p>Create new Form</p>
+        </button>
+    </div>
+</div>
