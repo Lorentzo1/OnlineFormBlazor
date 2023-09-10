@@ -76,6 +76,7 @@ namespace OnlineForm.Services
             }
             catch (Exception ex)
             {
+                logger.LogError($"{ex.Message}", ex);
                 return false;
             }
         }
@@ -94,11 +95,12 @@ namespace OnlineForm.Services
             }
             catch (Exception ex)
             {
-
+                logger.LogError($"{ex.Message}", ex);
                 return false;
             }
         }
 
+        //TO DO:
         public byte[] GetPdfBytes()
         {
             string pathToPdf = $"{Environment.CurrentDirectory}\\Resources\\GDPR.pdf";
