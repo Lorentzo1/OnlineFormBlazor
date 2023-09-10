@@ -4,6 +4,7 @@ using System.Text;
 using System.Net.Http.Json;
 using BlazorOnlineForm.Shared.Dtos;
 using BlazorOnlineForm.Shared.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace BlazorOnlineForm.Pages
 {
@@ -33,10 +34,9 @@ namespace BlazorOnlineForm.Pages
         private bool _dateOfBirtDisable = true;
         private bool _hideEditForm = false;
         private bool _hideCreateNewFormButton = true;
-        private bool _noIdCheckBoxChecked;
         public Form()
         {
-            InitializeFormState();
+            InitializeForm();
         }
         protected override async Task OnInitializedAsync()
         {
@@ -46,6 +46,14 @@ namespace BlazorOnlineForm.Pages
             await base.OnInitializedAsync();
         }
 
+        protected override Task OnParametersSetAsync()
+        {
+            if (Id is null)
+            {
+                InitializeFormDto();
+            }
+            return base.OnParametersSetAsync();
+        }
         private async Task OnValidSubmit()
         {
             HttpResponseMessage response;
@@ -178,7 +186,7 @@ namespace BlazorOnlineForm.Pages
             });
         }
 
-        private void InitializeFormState()
+        private void InitializeForm()
         {
             InitializeFormDto();
             _listOfContries = new List<string>() { "No Data" };
@@ -217,7 +225,6 @@ namespace BlazorOnlineForm.Pages
                 {
 
                     _formDto = await Http.GetFromJsonAsync<FormDto>($"https://localhost:7115/Form/{Id}");
-                    _noIdCheckBoxChecked = _formDto.IsCheckedNoId;
                 });
             }
         }
